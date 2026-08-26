@@ -1,6 +1,8 @@
 # PromptHub Ecosystem：DeepSeek Harness 插件与 Skill 目录
 
-> [English version](README.md)
+<p align="center">
+  <a href="README.md">English</a> | <a href="README.zh.md">简体中文</a>
+</p>
 
 PromptHub Ecosystem 是一个面向 **DeepSeek Harness（DSH）的插件与 AI Agent Skill 目录插件**。它把 PromptHub 的公开目录接入 DSH Web 设置页，支持搜索、分类、来源链接、作者、Star、兼容性和资源详情查看。
 

@@ -1,6 +1,8 @@
 # PromptHub Ecosystem for DeepSeek Harness | DSH Plugins & Skills
 
-> [中文版本](README.zh.md)
+<p align="center">
+  <a href="README.md">English</a> | <a href="README.zh.md">简体中文</a>
+</p>
 
 PromptHub Ecosystem is a **DeepSeek Harness (DSH) plugin catalog** for discovering DSH plugins and AI agent skills. It adds a read-only PromptHub directory to DSH Web Settings with search, categories, source links, author and Star metadata, compatibility details, and resource details.
 
