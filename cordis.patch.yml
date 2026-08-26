@@ -1,0 +1,8 @@
+- insert:
+    - id: prompthub-ecosystem
+      name: prompthub-dsh-ecosystem
+      inject: [webServer]
+      config:
+        apiBaseUrl: https://prompthub.xin/api
+        requestTimeoutMs: 12000
+        cacheTtlMs: 300000
