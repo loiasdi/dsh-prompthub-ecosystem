@@ -32,7 +32,7 @@ dsh plugin --profile web add link:/absolute/path/to/dsh-prompthub-ecosystem
 From the standalone repository root:
 
 ```bash
-cd integrations/dsh-prompthub-ecosystem
+cd dsh-prompthub-ecosystem
 npm run pack:local
 ```
 
