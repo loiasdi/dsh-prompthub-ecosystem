@@ -1,6 +1,6 @@
 {
   "name": "prompthub-dsh-ecosystem",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "PromptHub Plugin and Skill catalog for DeepSeek Harness",
   "type": "module",
   "private": true,
@@ -39,7 +39,8 @@
     "index.js",
     "client.js",
     "cordis.patch.yml",
-    "README.md"
+    "README.md",
+    "README.zh.md"
   ],
   "license": "UNLICENSED"
 }
