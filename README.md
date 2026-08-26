@@ -42,9 +42,9 @@ For the latest committed version, omit `#v0.1.0`. Pinning a release tag is recom
 
 ### Local package installation | 本地安装包
 
-Download the `.tgz` asset from the [v0.1.0 Release](https://github.com/loiasdi/dsh-prompthub-ecosystem/releases/tag/v0.1.0), or build it from a checkout:
+Download the `.tgz` asset from the [v0.1.1 Release](https://github.com/loiasdi/dsh-prompthub-ecosystem/releases/tag/v0.1.1), or build it from a checkout:
 
-从 [v0.1.0 Release](https://github.com/loiasdi/dsh-prompthub-ecosystem/releases/tag/v0.1.0) 下载 `.tgz`，也可以从本地仓库构建：
+从 [v0.1.1 Release](https://github.com/loiasdi/dsh-prompthub-ecosystem/releases/tag/v0.1.1) 下载 `.tgz`，也可以从本地仓库构建：
 
 ```bash
 npm run pack:local
@@ -55,7 +55,7 @@ The package is written to `dist/prompthub-dsh-ecosystem-<version>.tgz`. Install 
 打包文件会写入 `dist/prompthub-dsh-ecosystem-<version>.tgz`，使用绝对路径安装：
 
 ```bash
-dsh plugin --profile web add /absolute/path/prompthub-dsh-ecosystem-0.1.0.tgz
+dsh plugin --profile web add /absolute/path/prompthub-dsh-ecosystem-0.1.1.tgz
 ```
 
 The package can be copied to another machine; GitHub access is not required on that machine.
