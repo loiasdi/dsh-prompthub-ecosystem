@@ -1,6 +1,9 @@
 import assert from 'node:assert/strict'
+import { createRequire } from 'node:module'
 import test from 'node:test'
 import { createCatalogHandler, normalizeRemoteItem } from '../index.js'
+
+const { version } = createRequire(import.meta.url)('../package.json')
 
 function responseRecorder() {
   return {
@@ -60,23 +63,36 @@ test('proxies Plugin list requests and returns a unified response', async t => {
   const originalFetch = globalThis.fetch
   t.after(() => { globalThis.fetch = originalFetch })
   let requestedUrl
-  globalThis.fetch = async url => {
+  let requestedOptions
+  globalThis.fetch = async (url, options) => {
     requestedUrl = String(url)
+    requestedOptions = options
     return remoteResponse({
       success: true,
-      data: [{ id: 7, slug: 'plugin-seven', title: 'Plugin Seven', stars: 70 }],
+      data: [{
+        id: 7,
+        slug: 'plugin-seven',
+        title: 'Plugin Seven',
+        description: 'Fallback description',
+        description_zh: '中文描述',
+        description_en: 'English description',
+        stars: 70,
+      }],
       pagination: { page: 2, limit: 18, total: 20, totalPages: 2 },
     })
   }
 
   const handler = createCatalogHandler({ apiBaseUrl: 'https://example.test/api' })
-  const result = await invoke(handler, '/api/prompthub-ecosystem?type=plugin&page=2&search=video&limit=999')
+  const result = await invoke(handler, '/api/prompthub-ecosystem?type=plugin&page=2&search=video&limit=999&locale=en')
 
   assert.equal(result.status, 200)
   assert.match(requestedUrl, /\/api\/dsh\/plugins/)
   assert.match(requestedUrl, /page=2/)
   assert.match(requestedUrl, /limit=24/)
+  assert.match(requestedUrl, /locale=en/)
+  assert.equal(requestedOptions.headers['User-Agent'], `prompthub-dsh-ecosystem/${version}`)
   assert.equal(result.payload.data.items[0].resource_type, 'plugin')
+  assert.equal(result.payload.data.items[0].description, 'English description')
   assert.equal(result.payload.data.pagination.total, 20)
 })
 

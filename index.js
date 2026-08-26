@@ -1,4 +1,7 @@
+import { createRequire } from 'node:module'
+
 const ROUTE_PATH = '/api/prompthub-ecosystem'
+const { version: PLUGIN_VERSION } = createRequire(import.meta.url)('./package.json')
 const DEFAULT_CONFIG = Object.freeze({
   apiBaseUrl: 'https://prompthub.xin/api',
   requestTimeoutMs: 12000,
@@ -48,14 +51,19 @@ function safeUrl(value) {
   }
 }
 
-function normalizePlugin(item) {
+function localizedDescription(item, locale) {
+  if (locale === 'en') return item.description_en || item.description || item.description_zh || ''
+  return item.description_zh || item.description || item.description_en || ''
+}
+
+function normalizePlugin(item, locale) {
   return {
     resource_type: 'plugin',
     id: `plugin:${item.id}`,
     source_id: item.id,
     slug: item.slug,
     title: item.title || item.canonical_name || '',
-    description: item.description || '',
+    description: localizedDescription(item, locale),
     category: item.category || 'other',
     tags: Array.isArray(item.tags) ? item.tags : [],
     author: item.author_name || null,
@@ -75,14 +83,14 @@ function normalizePlugin(item) {
   }
 }
 
-function normalizeSkill(item) {
+function normalizeSkill(item, locale) {
   return {
     resource_type: 'skill',
     id: `skill:${item.id}`,
     source_id: item.id,
     slug: item.slug,
     title: item.title || '',
-    description: item.description || '',
+    description: localizedDescription(item, locale),
     category: item.category || 'other',
     tags: Array.isArray(item.tags) ? item.tags : [],
     author: item.publisher_name || item.owner_name || null,
@@ -105,12 +113,13 @@ function normalizeSkill(item) {
   }
 }
 
-export function normalizeRemoteItem(type, item) {
-  return type === 'plugin' ? normalizePlugin(item) : normalizeSkill(item)
+export function normalizeRemoteItem(type, item, locale = 'zh') {
+  return type === 'plugin' ? normalizePlugin(item, locale) : normalizeSkill(item, locale)
 }
 
 function buildRemoteUrl(config, requestUrl) {
   const type = requestUrl.searchParams.get('type') === 'skill' ? 'skill' : 'plugin'
+  const locale = requestUrl.searchParams.get('locale') === 'en' ? 'en' : 'zh'
   const view = requestUrl.searchParams.get('view') || 'list'
   let path
   if (view === 'categories') {
@@ -132,17 +141,15 @@ function buildRemoteUrl(config, requestUrl) {
     }
     remote.searchParams.set('limit', String(asPositiveInteger(requestUrl.searchParams.get('limit'), 18, 24)))
   }
-  if (type === 'skill') {
-    remote.searchParams.set('locale', requestUrl.searchParams.get('locale') === 'en' ? 'en' : 'zh')
-  }
-  return { remote, type, view }
+  remote.searchParams.set('locale', locale)
+  return { remote, type, view, locale }
 }
 
 async function fetchJson(url, timeoutMs) {
   const response = await fetch(url, {
     headers: {
       Accept: 'application/json',
-      'User-Agent': 'prompthub-dsh-ecosystem/0.1.0',
+      'User-Agent': `prompthub-dsh-ecosystem/${PLUGIN_VERSION}`,
     },
     signal: AbortSignal.timeout(timeoutMs),
   })
@@ -154,7 +161,7 @@ async function fetchJson(url, timeoutMs) {
   return JSON.parse(body)
 }
 
-function normalizePayload(type, view, payload) {
+function normalizePayload(type, view, payload, locale) {
   if (view === 'categories') {
     return {
       items: Array.isArray(payload.data)
@@ -163,10 +170,10 @@ function normalizePayload(type, view, payload) {
     }
   }
   if (view === 'detail') {
-    return { item: payload.data ? normalizeRemoteItem(type, payload.data) : null }
+    return { item: payload.data ? normalizeRemoteItem(type, payload.data, locale) : null }
   }
   return {
-    items: Array.isArray(payload.data) ? payload.data.map(item => normalizeRemoteItem(type, item)) : [],
+    items: Array.isArray(payload.data) ? payload.data.map(item => normalizeRemoteItem(type, item, locale)) : [],
     pagination: payload.pagination || { page: 1, limit: 18, total: 0, totalPages: 0 },
   }
 }
@@ -194,7 +201,7 @@ export function createCatalogHandler(configInput = {}) {
 
     try {
       const payload = await fetchJson(target.remote, config.requestTimeoutMs)
-      const data = normalizePayload(target.type, target.view, payload)
+      const data = normalizePayload(target.type, target.view, payload, target.locale)
       const fetchedAt = Date.now()
       cache.set(cacheKey, { data, fetchedAt })
       return json(res, 200, { success: true, data, cache: 'network', fetched_at: fetchedAt })

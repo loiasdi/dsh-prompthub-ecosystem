@@ -24,14 +24,14 @@ This repository is the standalone distribution repository for the DSH integratio
 Install a fixed release tag for predictable upgrades:
 
 ```bash
-dsh plugin --profile web add github:loiasdi/dsh-prompthub-ecosystem#v0.1.2
+dsh plugin --profile web add github:loiasdi/dsh-prompthub-ecosystem#v0.1.3
 ```
 
-For the latest committed version, omit `#v0.1.2`. Pinning a release tag is recommended for production-like environments.
+For the latest committed version, omit `#v0.1.3`. Pinning a release tag is recommended for production-like environments.
 
 ### Local package installation
 
-Download the `.tgz` asset from the [v0.1.2 Release](https://github.com/loiasdi/dsh-prompthub-ecosystem/releases/tag/v0.1.2), or build it from a checkout:
+Download the `.tgz` asset from the [v0.1.3 Release](https://github.com/loiasdi/dsh-prompthub-ecosystem/releases/tag/v0.1.3), or build it from a checkout:
 
 ```bash
 npm run pack:local
@@ -40,7 +40,7 @@ npm run pack:local
 The package is written to `dist/prompthub-dsh-ecosystem-<version>.tgz`. Install it with an absolute path:
 
 ```bash
-dsh plugin --profile web add /absolute/path/prompthub-dsh-ecosystem-0.1.2.tgz
+dsh plugin --profile web add /absolute/path/prompthub-dsh-ecosystem-0.1.3.tgz
 ```
 
 The package can be copied to another machine; GitHub access is not required on that machine.
@@ -56,9 +56,11 @@ Restart the DSH Web profile after installation, upgrade, or removal.
 ### Upgrade and removal
 
 ```bash
-dsh plugin --profile web update prompthub-dsh-ecosystem
+dsh plugin --profile web add github:loiasdi/dsh-prompthub-ecosystem#v0.1.3
 dsh plugin --profile web remove prompthub-dsh-ecosystem
 ```
+
+For local packages, run `add` again with the path to the new `.tgz` file.
 
 ## Requirements
 
@@ -99,7 +101,6 @@ The packaging script runs tests, syntax checks, archive inspection, and prints t
 - [PromptHub](https://prompthub.xin)
 - [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)
 - [Releases and local packages](https://github.com/loiasdi/dsh-prompthub-ecosystem/releases)
-- [PromptHub DSH ecosystem architecture](https://github.com/loiasdi/prompthub/blob/main/docs/architecture/PromptHub-DSH生态目录插件方案.md)
 
 ## License
 

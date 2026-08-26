@@ -42,9 +42,12 @@ window.__ModuleLoader__.load({
       loadFailed: 'Failed to load the catalog', previous: 'Previous', next: 'Next',
     }
 
+    function normalizeLocale(value) {
+      return String(value || 'zh').toLowerCase().startsWith('en') ? 'en' : 'zh'
+    }
+
     function fallbackLocale() {
-      var value = typeof navigator === 'undefined' ? 'zh' : navigator.language
-      return String(value || 'zh').toLowerCase().startsWith('zh') ? 'zh' : 'en'
+      return normalizeLocale(typeof navigator === 'undefined' ? 'zh' : navigator.language)
     }
 
     var activeLocale = fallbackLocale()
@@ -343,10 +346,10 @@ window.__ModuleLoader__.load({
       if (ctx.locale && typeof ctx.locale.register === 'function') {
         ctx.effect(function () { return ctx.locale.register(NS, { zh: zh, en: en }) }, 'prompthub-ecosystem: dictionaries')
         translate = ctx.locale.bind(NS)
-        try { activeLocale = ctx.locale.getLocale().active || activeLocale } catch (_) {}
+        try { activeLocale = normalizeLocale(ctx.locale.getLocale().active) } catch (_) {}
         if (typeof ctx.locale.subscribe === 'function') {
           ctx.effect(function () { return ctx.locale.subscribe(function () {
-            try { activeLocale = ctx.locale.getLocale().active || activeLocale } catch (_) {}
+            try { activeLocale = normalizeLocale(ctx.locale.getLocale().active) } catch (_) {}
             notifyLocale()
           }) }, 'prompthub-ecosystem: locale changes')
         }

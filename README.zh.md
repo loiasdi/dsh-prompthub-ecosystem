@@ -24,14 +24,14 @@ PromptHub Ecosystem 是一个面向 **DeepSeek Harness（DSH）的插件与 AI A
 安装固定版本 Tag，便于稳定升级：
 
 ```bash
-dsh plugin --profile web add github:loiasdi/dsh-prompthub-ecosystem#v0.1.2
+dsh plugin --profile web add github:loiasdi/dsh-prompthub-ecosystem#v0.1.3
 ```
 
-如需安装最新提交，可以省略 `#v0.1.2`。生产或长期使用建议固定 Release Tag。
+如需安装最新提交，可以省略 `#v0.1.3`。生产或长期使用建议固定 Release Tag。
 
 ### 本地安装包
 
-从 [v0.1.2 Release](https://github.com/loiasdi/dsh-prompthub-ecosystem/releases/tag/v0.1.2) 下载 `.tgz`，也可以从本地仓库构建：
+从 [v0.1.3 Release](https://github.com/loiasdi/dsh-prompthub-ecosystem/releases/tag/v0.1.3) 下载 `.tgz`，也可以从本地仓库构建：
 
 ```bash
 npm run pack:local
@@ -40,7 +40,7 @@ npm run pack:local
 打包文件会写入 `dist/prompthub-dsh-ecosystem-<version>.tgz`，使用绝对路径安装：
 
 ```bash
-dsh plugin --profile web add /absolute/path/prompthub-dsh-ecosystem-0.1.2.tgz
+dsh plugin --profile web add /absolute/path/prompthub-dsh-ecosystem-0.1.3.tgz
 ```
 
 本地安装包可以复制到其他机器，目标机器不需要访问 GitHub。
@@ -56,9 +56,11 @@ dsh plugin --profile web add link:/absolute/path/to/dsh-prompthub-ecosystem
 ### 升级与移除
 
 ```bash
-dsh plugin --profile web update prompthub-dsh-ecosystem
+dsh plugin --profile web add github:loiasdi/dsh-prompthub-ecosystem#v0.1.3
 dsh plugin --profile web remove prompthub-dsh-ecosystem
 ```
+
+本地安装包升级时，使用新版本 `.tgz` 的路径重新执行 `add`。
 
 ## 环境要求
 
@@ -99,7 +101,6 @@ npm run pack:local
 - [PromptHub](https://prompthub.xin)
 - [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)
 - [Release 与本地安装包](https://github.com/loiasdi/dsh-prompthub-ecosystem/releases)
-- [PromptHub DSH 生态目录插件方案](https://github.com/loiasdi/prompthub/blob/main/docs/architecture/PromptHub-DSH生态目录插件方案.md)
 
 ## 许可证
 

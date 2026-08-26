@@ -35,7 +35,7 @@ fi
 
 echo "==> Checking archive contents"
 archive_listing="$(tar -tzf "$package_path")"
-if printf '%s\n' "$archive_listing" | rg -i '(^|/)(\.env($|\.)|.*\.(pem|key|p12)($|/)|node_modules/|tests/)' >/dev/null; then
+if printf '%s\n' "$archive_listing" | grep -Eiq '(^|/)(\.env($|\.)|.*\.(pem|key|p12)($|/)|node_modules/|tests/)'; then
   echo "error: package contains a forbidden secret, dependency, or test path" >&2
   exit 1
 fi
